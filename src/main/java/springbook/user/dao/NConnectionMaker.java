@@ -1,6 +1,7 @@
 package springbook.user.dao;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
@@ -9,7 +10,9 @@ import java.sql.SQLException;
 public class NConnectionMaker implements ConnectionMaker {
 
     public Connection makeConnection() throws ClassNotFoundException, SQLException {
-        //N사의 독자적인 방법으로 Connection 생성
-        return null;
+        Class.forName("org.mariadb.jdbc.Driver");
+        Connection connection = DriverManager.getConnection("jdbc:mariadb://mariadb.my.to:3306/toby_spring", "toby", "toby");
+
+        return connection;
     }
 }
