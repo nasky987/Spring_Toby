@@ -7,7 +7,6 @@ import java.sql.SQLException;
  * Created by hreeman on 12/17/16.
  */
 public class DUserDao extends UserDao {
-    @Override
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         //D사 DB 커넥션 생성코드
         return null;
