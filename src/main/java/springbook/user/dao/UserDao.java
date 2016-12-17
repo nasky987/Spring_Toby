@@ -8,8 +8,14 @@ import java.sql.*;
  * Created by hreeman on 12/17/16.
  */
 public class UserDao {
+    private SimpleConnectionMaker simpleConnectionMaker;
+
+    public UserDao() {
+        simpleConnectionMaker = new SimpleConnectionMaker();
+    }
+
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection connection = getConnection();
+        Connection connection = simpleConnectionMaker.makeNewConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("insert into users(id, name, password) values(?, ?, ?)");
 
         preparedStatement.setString(1, user.getId());
@@ -23,7 +29,7 @@ public class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection connection = getConnection();
+        Connection connection = simpleConnectionMaker.makeNewConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("select * from users where id = ?");
 
         preparedStatement.setString(1, id);
@@ -41,12 +47,5 @@ public class UserDao {
         connection.close();
 
         return user;
-    }
-
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mariadb://mariadb.my.to:3306/toby_spring", "toby", "toby");
-
-        return connection;
     }
 }
