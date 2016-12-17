@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- 30초마다 설정 파일 변경 확인 -->
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <!-- 외부 설정 파일 -->
+    <property resource="logback.properties" />
+
+    <!-- 콘솔 로그 설정 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 파일 로그 설정 -->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/logger.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 하루에 한개 생성 -->
+            <fileNamePattern>logger.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- 30일 지난 로그 파일 삭제 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 로그 레벨 설정 -->
+    <logger name="org.springframewok" level="info" />
+    <logger name="org.hibernate" level="debug" />
+    <!--<logger name="to.my.java" level="debug" />-->
+
+    <!-- 조건문 -->
+    <if condition='property("RUN_MODE").equals("REAL")'>
+
+        <!-- 설정파일에 RUN_MODE가 SERVICE로 정의되어 있다면 콘솔 및 파일로 출력 -->
+        <then>
+            <!-- root = logger name="root" -->
+            <root level="info">
+                <appender-ref ref="console" />
+                <appender-ref ref="file" />
+            </root>
+        </then>
+
+        <!-- 설정파일에 RUN_MODE가 SERVICE로 정의되어 있지 않으면 콘솔로만 출력 -->
+        <else>
+            <root level="debug">
+                <appender-ref ref="console" />
+            </root>
+        </else>
+    </if>
+</configuration>
