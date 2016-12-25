@@ -8,10 +8,19 @@ import java.sql.*;
  * Created by hreeman on 12/17/16.
  */
 public class UserDao {
+    private static UserDao INSTANCE;
     private ConnectionMaker connectionMaker;
 
-    public UserDao(ConnectionMaker connectionMaker) {
+    private UserDao(ConnectionMaker connectionMaker) {
         this.connectionMaker = connectionMaker;
+    }
+
+    public static synchronized UserDao getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new UserDao(???);
+
+            return INSTANCE;
+        }
     }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
