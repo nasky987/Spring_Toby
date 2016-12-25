@@ -8,19 +8,12 @@ import java.sql.*;
  * Created by hreeman on 12/17/16.
  */
 public class UserDao {
-    private static UserDao INSTANCE;
     private ConnectionMaker connectionMaker;
+    private Connection connection;
+    private User user;
 
-    private UserDao(ConnectionMaker connectionMaker) {
+    public UserDao(ConnectionMaker connectionMaker) {
         this.connectionMaker = connectionMaker;
-    }
-
-    public static synchronized UserDao getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new UserDao(???);
-
-            return INSTANCE;
-        }
     }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
@@ -38,7 +31,7 @@ public class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection connection = connectionMaker.makeConnection();
+        this.connection = connectionMaker.makeConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("select * from users where id = ?");
 
         preparedStatement.setString(1, id);
@@ -46,15 +39,15 @@ public class UserDao {
         ResultSet resultSet = preparedStatement.executeQuery();
         resultSet.next();
 
-        User user = new User();
-        user.setId(resultSet.getString("id"));
-        user.setName(resultSet.getString("name"));
-        user.setPassword(resultSet.getString("password"));
+        this.user = new User();
+        this.user.setId(resultSet.getString("id"));
+        this.user.setName(resultSet.getString("name"));
+        this.user.setPassword(resultSet.getString("password"));
 
         resultSet.close();
         preparedStatement.close();
         connection.close();
 
-        return user;
+        return this.user;
     }
 }
