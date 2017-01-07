@@ -8,7 +8,8 @@ import java.sql.SQLException;
  */
 public class NUserDao extends UserDao {
     public NUserDao(ConnectionMaker connectionMaker) {
-        super(connectionMaker);
+//        super(connectionMaker);
+        super();
     }
 
     public Connection getConnection() throws ClassNotFoundException, SQLException {
