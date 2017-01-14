@@ -1,8 +1,7 @@
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import springbook.user.dao.DaoFactory;
+import org.springframework.context.support.GenericXmlApplicationContext;
 import springbook.user.dao.UserDao;
 
 import java.sql.SQLException;
@@ -14,7 +13,7 @@ public class UserDaoTest {
     final static Logger logger = LoggerFactory.getLogger(UserDaoTest.class);
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
 
         UserDao userDao3 = context.getBean("userDao", UserDao.class);
         UserDao userDao4 = context.getBean("userDao", UserDao.class);
