@@ -2,22 +2,22 @@ package springbook.user.dao;
 
 import springbook.user.domain.User;
 
+import javax.sql.DataSource;
 import java.sql.*;
 
 /**
  * Created by hreeman on 12/17/16.
  */
 public class UserDao {
-    private ConnectionMaker connectionMaker;
-    private Connection connection;
+    private DataSource dataSource;
     private User user;
 
-    public void setConnectionMaker(ConnectionMaker connectionMaker) {
-        this.connectionMaker = connectionMaker;
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection connection = connectionMaker.makeConnection();
+        Connection connection = dataSource.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("insert into users(id, name, password) values(?, ?, ?)");
 
         preparedStatement.setString(1, user.getId());
@@ -30,6 +30,7 @@ public class UserDao {
         connection.close();
     }
 
+    /*
     public User get(String id) throws ClassNotFoundException, SQLException {
         this.connection = connectionMaker.makeConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("select * from users where id = ?");
@@ -50,4 +51,5 @@ public class UserDao {
 
         return this.user;
     }
+    */
 }
